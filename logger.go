@@ -31,28 +31,28 @@ func SetLevel(level string) (err error) {
 	return err
 }
 
-func Trace(message string) {
-	logrus.Trace(message)
+func Trace(args ...interface{}) {
+	logrus.Trace(args...)
 }
 
-func Debug(message string) {
-	logrus.Debug(message)
+func Debug(args ...interface{}) {
+	logrus.Debug(args...)
 }
 
-func Info(message string) {
-	logrus.Info(message)
+func Info(args ...interface{}) {
+	logrus.Info(args...)
 }
 
-func Warn(message string) {
-	logrus.Warn(message)
+func Warn(args ...interface{}) {
+	logrus.Warn(args...)
 }
 
-func Error(message string) {
-	logrus.Error(message)
+func Error(args ...interface{}) {
+	logrus.Error(args...)
 }
 
-func Fatal(message string) {
-	logrus.Fatal(message)
+func Fatal(args ...interface{}) {
+	logrus.Fatal(args...)
 }
 
 func New() *logrus.Logger {

@@ -6,10 +6,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// type Logger struct {
-// 	logrus.Logger
-// }
-
 func SetLevel(level string) (err error) {
 	switch level {
 	case "trace":
@@ -31,28 +27,28 @@ func SetLevel(level string) (err error) {
 	return err
 }
 
-func Trace(args ...interface{}) {
-	logrus.Trace(args...)
+func Trace(format string, args ...interface{}) {
+	logrus.Tracef(format, args...)
 }
 
-func Debug(args ...interface{}) {
-	logrus.Debug(args...)
+func Debug(format string, args ...interface{}) {
+	logrus.Debugf(format, args...)
 }
 
-func Info(args ...interface{}) {
-	logrus.Info(args...)
+func Info(format string, args ...interface{}) {
+	logrus.Infof(format, args...)
 }
 
-func Warn(args ...interface{}) {
-	logrus.Warn(args...)
+func Warn(format string, args ...interface{}) {
+	logrus.Warnf(format, args...)
 }
 
-func Error(args ...interface{}) {
-	logrus.Error(args...)
+func Error(format string, args ...interface{}) {
+	logrus.Errorf(format, args...)
 }
 
-func Fatal(args ...interface{}) {
-	logrus.Fatal(args...)
+func Fatal(format string, args ...interface{}) {
+	logrus.Fatalf(format, args...)
 }
 
 func New() *logrus.Logger {

@@ -15,5 +15,5 @@ func TestLogger(t *testing.T) {
 	Trace("test trace")
 	Debug("test debug")
 
-	Fatal("test fatal")
+	// Fatal("test fatal")
 }

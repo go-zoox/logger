@@ -12,7 +12,7 @@ func TestLogger(t *testing.T) {
 		t.Error(err)
 	}
 
-	Trace("test trace")
+	// Trace("test trace")
 	Debug("test debug")
 
 	// Fatal("test fatal")

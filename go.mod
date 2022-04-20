@@ -2,6 +2,4 @@ module github.com/go-zoox/logger
 
 go 1.17
 
-require github.com/sirupsen/logrus v1.8.1
-
-require golang.org/x/sys v0.0.0-20220319134239-a9b59b0215f8 // indirect
+require github.com/go-zoox/datetime v1.0.4

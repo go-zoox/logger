@@ -26,5 +26,10 @@ logger.Fatal("Hi, %s", "Goo Zoox")
 logger.SetLevel("error")
 ```
 
+## Inspired by
+* [kenshinx/godns](https://github.com/kenshinx/godns/blob/master/log.go) - About
+A fast dns cache server written by go.
+* [winstonjs/winston](https://github.com/winstonjs/winston) - A logger for just about everything.
+
 ## License
 GoZoox is released under the [MIT License](./LICENSE).

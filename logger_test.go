@@ -7,10 +7,10 @@ func TestLogger(t *testing.T) {
 	Warn("test warn")
 	Error("test error")
 
-	err := SetLevel("trace")
-	if err != nil {
-		t.Error(err)
-	}
+	// err := SetLevel("trace")
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 
 	// Trace("test trace")
 	Debug("test debug")

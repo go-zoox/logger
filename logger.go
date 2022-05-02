@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 
+	"github.com/go-zoox/datetime"
 	csc "github.com/go-zoox/logger/components/constants"
 	csm "github.com/go-zoox/logger/components/message"
 	cst "github.com/go-zoox/logger/components/transport"
@@ -12,6 +13,7 @@ import (
 // Logger is the main logger object.
 type Logger struct {
 	level      int
+	timeFormat string
 	messageCh  chan *csm.Message
 	transports map[string]cst.Transport
 }
@@ -19,7 +21,8 @@ type Logger struct {
 // Options is the options for the logger.
 type Options struct {
 	Level      int
-	transports map[string]cst.Transport
+	Transports map[string]cst.Transport
+	TimeFormat string
 }
 
 // New creates a new logger object.
@@ -28,19 +31,24 @@ func New(options ...Options) *Logger {
 	transports := map[string]cst.Transport{
 		"console": console.New(),
 	}
+	timeFormat := "YYYY-MM-DD HH:mm:ss"
 
 	if len(options) > 0 {
 		if options[0].Level > 0 {
 			level = options[0].Level
 		}
-		if options[0].transports != nil {
-			transports = options[0].transports
+		if options[0].Transports != nil {
+			transports = options[0].Transports
+		}
+		if options[0].TimeFormat != "" {
+			timeFormat = options[0].TimeFormat
 		}
 	}
 
 	return &Logger{
 		messageCh:  make(chan *csm.Message, csc.LogOutputBuffer),
 		level:      level,
+		timeFormat: timeFormat,
 		transports: transports,
 	}
 }
@@ -50,14 +58,21 @@ func (l *Logger) SetLevel(level int) {
 	l.level = level
 }
 
+// SetTimeFormat sets the time format.
+func (l *Logger) SetTimeFormat(format string) {
+	l.timeFormat = format
+}
+
 func (l *Logger) write(message string, level int) {
 	if l.level > level {
 		return
 	}
 
+	time := datetime.Now().Format(l.timeFormat)
+
 	m := &csm.Message{
 		Level:   level,
-		Message: message,
+		Message: fmt.Sprintf("%s %s", time, message),
 	}
 	for _, transport := range l.transports {
 		transport.Write(m)

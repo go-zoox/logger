@@ -1,8 +1,8 @@
 package console
 
 import (
+	"fmt"
 	"log"
-	"os"
 
 	"github.com/go-zoox/logger/components/constants"
 	"github.com/go-zoox/logger/components/message"
@@ -26,16 +26,13 @@ func New(config ...*Config) transport.Transport {
 		}
 	}
 
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-
 	return &Console{
-		level:  level,
-		logger: logger,
+		level: level,
 	}
 }
 
 func (c *Console) Write(message *message.Message) {
 	if c.level <= message.Level {
-		c.logger.Println(message.Message)
+		fmt.Println(message.Message)
 	}
 }

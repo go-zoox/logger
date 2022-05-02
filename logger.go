@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 
+	"github.com/go-zoox/chalk"
 	"github.com/go-zoox/datetime"
 	csc "github.com/go-zoox/logger/components/constants"
 	csm "github.com/go-zoox/logger/components/message"
@@ -63,47 +64,59 @@ func (l *Logger) SetTimeFormat(format string) {
 	l.timeFormat = format
 }
 
-func (l *Logger) write(message string, level int) {
+func (l *Logger) write(level int, format string, args ...interface{}) {
 	if l.level > level {
 		return
 	}
 
+	message := fmt.Sprintf(format, args...)
+
 	time := datetime.Now().Format(l.timeFormat)
+
+	levelX := chalk.Blue("INFO")
+	switch level {
+	case csc.LevelDebug:
+		levelX = chalk.Gray("DEBUG")
+	case csc.LevelInfo:
+		levelX = chalk.Blue("INFO")
+	case csc.LevelWarn:
+		levelX = chalk.Yellow("WARN")
+	case csc.LevelError:
+		levelX = chalk.Red("ERROR")
+	case csc.LevelFatal:
+		levelX = chalk.Red("FATAL")
+	}
 
 	m := &csm.Message{
 		Level:   level,
-		Message: fmt.Sprintf("%s %s", time, message),
+		Message: fmt.Sprintf("%s %s %s", time, levelX, message),
 	}
 	for _, transport := range l.transports {
 		transport.Write(m)
 	}
 }
 
-func (l *Logger) getFormat(name string, format string) string {
-	return fmt.Sprintf("[%s] ", name) + format
-}
-
 // Debug logs a debug message.
 func (l *Logger) Debug(format string, v ...interface{}) {
-	l.write(fmt.Sprintf(l.getFormat("DEBUG", format), v...), csc.LevelDebug)
+	l.write(csc.LevelDebug, format, v...)
 }
 
 // Info logs an info message.
 func (l *Logger) Info(format string, v ...interface{}) {
-	l.write(fmt.Sprintf(l.getFormat("INFO", format), v...), csc.LevelInfo)
+	l.write(csc.LevelInfo, format, v...)
 }
 
 // Warn logs a warning message.
 func (l *Logger) Warn(format string, v ...interface{}) {
-	l.write(fmt.Sprintf(l.getFormat("WARN", format), v...), csc.LevelWarn)
+	l.write(csc.LevelWarn, format, v...)
 }
 
 // Error logs an error message.
 func (l *Logger) Error(format string, v ...interface{}) {
-	l.write(fmt.Sprintf(l.getFormat("ERROR", format), v...), csc.LevelError)
+	l.write(csc.LevelError, format, v...)
 }
 
 // Fatal logs a fatal message.
 func (l *Logger) Fatal(format string, v ...interface{}) {
-	l.write(fmt.Sprintf(l.getFormat("FATAL", format), v...), csc.LevelFatal)
+	l.write(csc.LevelFatal, format, v...)
 }

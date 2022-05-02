@@ -1,4 +1,4 @@
 package logger
 
 // Version returns the current version of the logger.
-var Version = "0.0.1"
+var Version = "1.1.1"

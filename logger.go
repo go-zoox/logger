@@ -32,7 +32,7 @@ func New(options ...Options) *Logger {
 	transports := map[string]cst.Transport{
 		"console": console.New(),
 	}
-	timeFormat := "YYYY-MM-DD HH:mm:ss"
+	timeFormat := "YYYY/MM/DD HH:mm:ss"
 
 	if len(options) > 0 {
 		if options[0].Level > 0 {

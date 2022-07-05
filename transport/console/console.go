@@ -10,18 +10,18 @@ import (
 )
 
 type Console struct {
-	level  int
+	level  string
 	logger *log.Logger
 }
 
 type Config struct {
-	Level int
+	Level string
 }
 
 func New(config ...*Config) transport.Transport {
 	level := constants.LevelDebug
 	if len(config) > 0 {
-		if config[0].Level > 0 {
+		if config[0].Level != "" {
 			level = config[0].Level
 		}
 	}
@@ -32,7 +32,7 @@ func New(config ...*Config) transport.Transport {
 }
 
 func (c *Console) Write(message *message.Message) {
-	if c.level <= message.Level {
+	if constants.LevelMap[c.level] <= constants.LevelMap[message.Level] {
 		fmt.Println(message.Message)
 	}
 }

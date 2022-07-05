@@ -4,13 +4,21 @@ const LogOutputBuffer = 1024
 
 const (
 	// LevelDebug is Level Debug
-	LevelDebug = iota
+	LevelDebug = "DEBUG"
 	// LevelInfo is Level Info
-	LevelInfo
+	LevelInfo = "INFO"
 	// LevelWarn is Level Warn
-	LevelWarn
+	LevelWarn = "WARN"
 	// LevelError is Level Error
-	LevelError
+	LevelError = "ERROR"
 	// LevelFatal is Level Fatal
-	LevelFatal
+	LevelFatal = "FATAL"
 )
+
+var LevelMap = map[string]int{
+	"DEBUG": 0,
+	"INFO":  1,
+	"WARN":  2,
+	"ERROR": 3,
+	"FATAL": 4,
+}

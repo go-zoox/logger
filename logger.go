@@ -27,7 +27,7 @@ type Options struct {
 }
 
 // New creates a new logger object.
-func New(options ...Options) *Logger {
+func New(options ...*Options) *Logger {
 	level := csc.LevelDebug
 	transports := map[string]cst.Transport{
 		"console": console.New(),

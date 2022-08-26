@@ -13,7 +13,7 @@ import (
 
 // Logger is the main logger object.
 type Logger struct {
-	level      int
+	level      string
 	timeFormat string
 	messageCh  chan *csm.Message
 	transports map[string]cst.Transport
@@ -21,13 +21,13 @@ type Logger struct {
 
 // Options is the options for the logger.
 type Options struct {
-	Level      int
+	Level      string
 	Transports map[string]cst.Transport
 	TimeFormat string
 }
 
 // New creates a new logger object.
-func New(options ...Options) *Logger {
+func New(options ...*Options) *Logger {
 	level := csc.LevelDebug
 	transports := map[string]cst.Transport{
 		"console": console.New(),
@@ -35,7 +35,7 @@ func New(options ...Options) *Logger {
 	timeFormat := "YYYY/MM/DD HH:mm:ss"
 
 	if len(options) > 0 {
-		if options[0].Level > 0 {
+		if options[0].Level != "0" {
 			level = options[0].Level
 		}
 		if options[0].Transports != nil {
@@ -55,7 +55,7 @@ func New(options ...Options) *Logger {
 }
 
 // SetLevel sets the level of the logger.
-func (l *Logger) SetLevel(level int) {
+func (l *Logger) SetLevel(level string) {
 	l.level = level
 }
 
@@ -64,8 +64,8 @@ func (l *Logger) SetTimeFormat(format string) {
 	l.timeFormat = format
 }
 
-func (l *Logger) write(level int, format string, args ...interface{}) {
-	if l.level > level {
+func (l *Logger) write(level string, format string, args ...interface{}) {
+	if csc.LevelMap[l.level] > csc.LevelMap[level] {
 		return
 	}
 

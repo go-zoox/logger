@@ -1,6 +1,6 @@
 package message
 
 type Message struct {
-	Level   int
+	Level   string
 	Message string
 }

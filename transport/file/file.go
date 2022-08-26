@@ -10,13 +10,13 @@ import (
 )
 
 type File struct {
-	level int
+	level string
 	// file   string
 	logger *log.Logger
 }
 
 type Config struct {
-	Level int
+	Level string
 	File  string
 }
 
@@ -24,7 +24,7 @@ func New(config ...*Config) transport.Transport {
 	level := constants.LevelDebug
 	var logger *log.Logger
 	if len(config) > 0 {
-		if config[0].Level > 0 {
+		if config[0].Level != "" {
 			level = config[0].Level
 		}
 		if config[0].File != "" {
@@ -48,7 +48,7 @@ func (f *File) Write(message *message.Message) {
 		return
 	}
 
-	if f.level <= message.Level {
+	if constants.LevelMap[f.level] <= constants.LevelMap[message.Level] {
 		f.logger.Println(message.Message)
 	}
 }

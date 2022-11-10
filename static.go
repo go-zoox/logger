@@ -2,9 +2,12 @@ package logger
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/go-zoox/logger/components/constants"
 )
+
+var DefaultLevel = constants.LevelInfo
 
 var logger = New()
 var (
@@ -19,6 +22,14 @@ var (
 	// LevelFatal is Level Fatal
 	LevelFatal = constants.LevelFatal
 )
+
+func init() {
+	envLogLevel := os.Getenv("LOG_LEVEL")
+	if envLogLevel != "" {
+		DefaultLevel = envLogLevel
+		logger.SetLevel(DefaultLevel)
+	}
+}
 
 // SetLevel sets the level of the logger.
 func SetLevel(level string) (err error) {

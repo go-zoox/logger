@@ -25,15 +25,15 @@ func SetLevel(level string) (err error) {
 	switch level {
 	// case "trace":
 	// 	logger.SetLevel(logger.TraceLevel)
-	case "debug":
+	case "debug", LevelDebug:
 		logger.SetLevel(LevelDebug)
-	case "info":
+	case "info", LevelInfo:
 		logger.SetLevel(LevelInfo)
-	case "warn", "warning":
+	case "warn", "warning", LevelWarn:
 		logger.SetLevel(LevelWarn)
-	case "error":
+	case "error", LevelError:
 		logger.SetLevel(LevelError)
-	case "fatal":
+	case "fatal", LevelFatal:
 		logger.SetLevel(LevelFatal)
 	default:
 		err = fmt.Errorf("not a valid logger Level: %s, available: %s", level, "debug,info,warn,error,fatal")

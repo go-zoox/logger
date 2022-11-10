@@ -28,7 +28,7 @@ type Options struct {
 
 // New creates a new logger object.
 func New(options ...*Options) *Logger {
-	level := csc.LevelDebug
+	level := csc.LevelInfo
 	transports := map[string]cst.Transport{
 		"console": console.New(),
 	}

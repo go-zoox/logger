@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/go-zoox/chalk"
 	"github.com/go-zoox/datetime"
@@ -56,7 +57,7 @@ func New(options ...*Options) *Logger {
 
 // SetLevel sets the level of the logger.
 func (l *Logger) SetLevel(level string) {
-	l.level = level
+	l.level = strings.ToUpper(level)
 }
 
 // SetTimeFormat sets the time format.

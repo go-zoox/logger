@@ -121,3 +121,28 @@ func (l *Logger) Error(format string, v ...interface{}) {
 func (l *Logger) Fatal(format string, v ...interface{}) {
 	l.write(csc.LevelFatal, format, v...)
 }
+
+// Debugf logs a debug message.
+func (l *Logger) Debugf(format string, v ...interface{}) {
+	l.write(csc.LevelDebug, format, v...)
+}
+
+// Infof logs an info message.
+func (l *Logger) Infof(format string, v ...interface{}) {
+	l.write(csc.LevelInfo, format, v...)
+}
+
+// Warnf logs a warning message.
+func (l *Logger) Warnf(format string, v ...interface{}) {
+	l.write(csc.LevelWarn, format, v...)
+}
+
+// Errorf logs an error message.
+func (l *Logger) Errorf(format string, v ...interface{}) {
+	l.write(csc.LevelError, format, v...)
+}
+
+// Fatalf logs a fatal message.
+func (l *Logger) Fatalf(format string, v ...interface{}) {
+	l.write(csc.LevelFatal, format, v...)
+}

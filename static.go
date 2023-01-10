@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/go-zoox/logger/components/constants"
+	cst "github.com/go-zoox/logger/components/transport"
 )
 
 var DefaultLevel = constants.LevelInfo
@@ -37,20 +38,32 @@ func SetLevel(level string) (err error) {
 	// case "trace":
 	// 	logger.SetLevel(logger.TraceLevel)
 	case "debug", LevelDebug:
-		logger.SetLevel(LevelDebug)
+		err = logger.SetLevel(LevelDebug)
 	case "info", LevelInfo:
-		logger.SetLevel(LevelInfo)
+		err = logger.SetLevel(LevelInfo)
 	case "warn", "warning", LevelWarn:
-		logger.SetLevel(LevelWarn)
+		err = logger.SetLevel(LevelWarn)
 	case "error", LevelError:
-		logger.SetLevel(LevelError)
+		err = logger.SetLevel(LevelError)
 	case "fatal", LevelFatal:
-		logger.SetLevel(LevelFatal)
+		err = logger.SetLevel(LevelFatal)
 	default:
 		err = fmt.Errorf("not a valid logger Level: %s, available: %s", level, "debug,info,warn,error,fatal")
 	}
 
 	return err
+}
+
+// SetTransports sets the transports of the logger.
+//
+//	it will overrides system transport, if you only want append transport, just use AppendTransports.
+func SetTransports(transports map[string]cst.Transport) error {
+	return logger.SetTransports(transports)
+}
+
+// AppendTransports appends the transports of the logger.
+func AppendTransports(transports map[string]cst.Transport) error {
+	return logger.AppendTransports(transports)
 }
 
 // func Trace(format string, args ...interface{}) {

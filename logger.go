@@ -56,8 +56,30 @@ func New(options ...*Options) *Logger {
 }
 
 // SetLevel sets the level of the logger.
-func (l *Logger) SetLevel(level string) {
+func (l *Logger) SetLevel(level string) error {
 	l.level = strings.ToUpper(level)
+	return nil
+}
+
+// SetTransports sets the transports of the logger.
+//
+//	it will overrides system transport, if you only want append transport, just use AppendTransports.
+func (l *Logger) SetTransports(transports map[string]cst.Transport) error {
+	l.transports = transports
+	return nil
+}
+
+// AppendTransports appends the transports of the logger.
+func (l *Logger) AppendTransports(transports map[string]cst.Transport) error {
+	for key, transport := range transports {
+		if _, ok := l.transports[key]; ok {
+			return fmt.Errorf("transport(%s) already used, please add another", key)
+		}
+
+		l.transports[key] = transport
+	}
+
+	return nil
 }
 
 // SetTimeFormat sets the time format.

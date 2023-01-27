@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/go-zoox/chalk"
@@ -116,6 +117,11 @@ func (l *Logger) write(level string, format string, args ...interface{}) {
 	}
 	for _, transport := range l.transports {
 		transport.Write(m)
+	}
+
+	// fatal show exit after write log
+	if level == csc.LevelFatal {
+		os.Exit(1)
 	}
 }
 

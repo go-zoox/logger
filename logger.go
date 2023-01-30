@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-zoox/chalk"
 	"github.com/go-zoox/datetime"
+	"github.com/go-zoox/logger/components/constants"
 	csc "github.com/go-zoox/logger/components/constants"
 	csm "github.com/go-zoox/logger/components/message"
 	cst "github.com/go-zoox/logger/components/transport"
@@ -115,8 +116,10 @@ func (l *Logger) write(level string, format string, args ...interface{}) {
 		Level:   level,
 		Message: fmt.Sprintf("%s %s %s", time, levelX, message),
 	}
-	for _, transport := range l.transports {
-		transport.Write(m)
+	if constants.LevelMap[l.level] <= constants.LevelMap[m.Level] {
+		for _, transport := range l.transports {
+			transport.Write([]byte(m.Message))
+		}
 	}
 
 	// fatal show exit after write log

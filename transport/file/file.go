@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/go-zoox/logger/components/constants"
-	"github.com/go-zoox/logger/components/message"
 	"github.com/go-zoox/logger/components/transport"
 )
 
@@ -43,12 +42,12 @@ func New(config ...*Config) transport.Transport {
 	}
 }
 
-func (f *File) Write(message *message.Message) {
+func (f *File) Write(p []byte) (n int, err error) {
 	if f.logger == nil {
 		return
 	}
 
-	if constants.LevelMap[f.level] <= constants.LevelMap[message.Level] {
-		f.logger.Println(message.Message)
-	}
+	f.logger.Println(string(p))
+
+	return len(p), nil
 }

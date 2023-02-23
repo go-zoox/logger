@@ -34,3 +34,7 @@ func (c *Console) Write(p []byte) (n int, err error) {
 	fmt.Println(string(p))
 	return len(p), nil
 }
+
+func (c *Console) WriteWithLevel(p []byte, level string) (n int, err error) {
+	return c.Write(p)
+}

@@ -12,6 +12,8 @@ type File struct {
 	level string
 	// file   string
 	logger *log.Logger
+	//
+	cfg *Config
 }
 
 type Config struct {
@@ -47,6 +49,7 @@ func New(cfg ...*Config) transport.Transport {
 	}
 
 	return &File{
+		cfg:    cfgX,
 		level:  cfgX.Level,
 		logger: log.New(cfgX.File, "", log.Ldate|log.Ltime),
 	}
@@ -54,6 +57,18 @@ func New(cfg ...*Config) transport.Transport {
 
 func (f *File) Write(p []byte) (n int, err error) {
 	f.logger.Println(string(p))
+
+	return len(p), nil
+}
+
+func (f *File) WriteWithLevel(p []byte, level string) (n int, err error) {
+	if !f.cfg.Exact {
+		f.logger.Println(string(p))
+	} else {
+		if f.level == level {
+			f.logger.Println(string(p))
+		}
+	}
 
 	return len(p), nil
 }

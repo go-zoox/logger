@@ -118,7 +118,7 @@ func (l *Logger) write(level string, format string, args ...interface{}) {
 	}
 	if constants.LevelMap[l.level] <= constants.LevelMap[m.Level] {
 		for _, transport := range l.transports {
-			transport.Write([]byte(m.Message))
+			transport.WriteWithLevel([]byte(m.Message), m.Level)
 		}
 	}
 

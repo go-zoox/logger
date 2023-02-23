@@ -3,6 +3,7 @@ package file
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/go-zoox/logger/components/constants"
 	"github.com/go-zoox/logger/components/transport"
@@ -35,6 +36,9 @@ func New(cfg ...*Config) transport.Transport {
 
 	if len(cfg) > 0 && cfg[0] != nil {
 		cfgX = cfg[0]
+
+		// @TODO force upper case for compatibility lower case
+		cfgX.Level = strings.ToUpper(cfgX.Level)
 	}
 
 	if cfg[0].FilePath != "" {

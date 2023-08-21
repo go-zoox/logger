@@ -8,6 +8,7 @@ import (
 	cst "github.com/go-zoox/logger/components/transport"
 )
 
+// DefaultLevel ...
 var DefaultLevel = constants.LevelInfo
 
 var logger = New()

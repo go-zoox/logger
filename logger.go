@@ -177,3 +177,8 @@ func (l *Logger) Errorf(format string, v ...interface{}) {
 func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.write(csc.LevelFatal, format, v...)
 }
+
+// Printf logs a message.
+func (l *Logger) Printf(format string, v ...interface{}) {
+	l.Infof(format, v...)
+}

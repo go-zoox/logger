@@ -63,6 +63,11 @@ func (l *Logger) SetLevel(level string) error {
 	return nil
 }
 
+// GetLevel gets the level of the logger.
+func (l *Logger) GetLevel() string {
+	return l.level
+}
+
 // SetTransports sets the transports of the logger.
 //
 //	it will overrides system transport, if you only want append transport, just use AppendTransports.

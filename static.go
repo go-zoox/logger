@@ -11,6 +11,9 @@ import (
 // DefaultLevel ...
 var DefaultLevel = constants.LevelInfo
 
+// LogLevelEnv ...
+var LogLevelEnv = "LOG_LEVEL"
+
 var logger = New()
 var (
 	// LevelDebug is Level Debug
@@ -26,7 +29,7 @@ var (
 )
 
 func init() {
-	envLogLevel := os.Getenv("LOG_LEVEL")
+	envLogLevel := os.Getenv(LogLevelEnv)
 	if envLogLevel != "" {
 		DefaultLevel = envLogLevel
 		logger.SetLevel(DefaultLevel)
@@ -53,6 +56,11 @@ func SetLevel(level string) (err error) {
 	}
 
 	return err
+}
+
+// GetLevel returns the level of the logger.
+func GetLevel() string {
+	return logger.GetLevel()
 }
 
 // SetTransports sets the transports of the logger.
@@ -94,4 +102,29 @@ func Error(format string, args ...interface{}) {
 // Fatal logs a fatal message.
 func Fatal(format string, args ...interface{}) {
 	logger.Fatal(format, args...)
+}
+
+// IsDebugLevel returns true if the logger level is debug.
+func IsDebugLevel() bool {
+	return logger.IsDebugLevel()
+}
+
+// IsInfoLevel returns true if the logger level is info.
+func IsInfoLevel() bool {
+	return logger.IsInfoLevel()
+}
+
+// IsWarnLevel returns true if the logger level is warn.
+func IsWarnLevel() bool {
+	return logger.IsWarnLevel()
+}
+
+// IsErrorLevel returns true if the logger level is error.
+func IsErrorLevel() bool {
+	return logger.IsErrorLevel()
+}
+
+// IsFatalLevel returns true if the logger level is fatal.
+func IsFatalLevel() bool {
+	return logger.IsFatalLevel()
 }

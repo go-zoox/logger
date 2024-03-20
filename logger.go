@@ -95,7 +95,9 @@ func (l *Logger) SetTimeFormat(format string) {
 }
 
 func (l *Logger) write(level string, format string, args ...interface{}) {
-	if csc.LevelMap[l.level] > csc.LevelMap[level] {
+	if level == LevelInfo {
+		// @TODO History for author, loves use Infof for user, so we need to keep it.
+	} else if csc.LevelMap[l.level] > csc.LevelMap[level] {
 		return
 	}
 

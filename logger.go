@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-zoox/chalk"
 	"github.com/go-zoox/datetime"
-	"github.com/go-zoox/logger/components/constants"
 	csc "github.com/go-zoox/logger/components/constants"
 	csm "github.com/go-zoox/logger/components/message"
 	cst "github.com/go-zoox/logger/components/transport"
@@ -31,7 +30,7 @@ type Options struct {
 
 // New creates a new logger object.
 func New(options ...*Options) *Logger {
-	level := DefaultLevel
+	level := csc.LevelInfo
 	transports := map[string]cst.Transport{
 		"console": console.New(),
 	}
@@ -95,6 +94,7 @@ func (l *Logger) SetTimeFormat(format string) {
 }
 
 func (l *Logger) write(level string, format string, args ...interface{}) {
+	// fmt.Printf("[logger.write] 系统日志等级（%s），用户实际日志等级：%s => %v\n", l.level, level, csc.LevelMap[l.level] > csc.LevelMap[level])
 	if level == LevelInfo {
 		// @TODO History for author, loves use Infof for user, so we need to keep it.
 	} else if csc.LevelMap[l.level] > csc.LevelMap[level] {
@@ -123,10 +123,8 @@ func (l *Logger) write(level string, format string, args ...interface{}) {
 		Level:   level,
 		Message: fmt.Sprintf("%s %s %s", time, levelX, message),
 	}
-	if constants.LevelMap[l.level] <= constants.LevelMap[m.Level] {
-		for _, transport := range l.transports {
-			transport.WriteWithLevel([]byte(m.Message), m.Level)
-		}
+	for _, transport := range l.transports {
+		transport.WriteWithLevel([]byte(m.Message), m.Level)
 	}
 
 	// fatal show exit after write log

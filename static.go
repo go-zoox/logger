@@ -8,9 +8,6 @@ import (
 	cst "github.com/go-zoox/logger/components/transport"
 )
 
-// DefaultLevel ...
-var DefaultLevel = constants.LevelInfo
-
 // LogLevelEnv ...
 var LogLevelEnv = "LOG_LEVEL"
 
@@ -31,8 +28,7 @@ var (
 func init() {
 	envLogLevel := os.Getenv(LogLevelEnv)
 	if envLogLevel != "" {
-		DefaultLevel = envLogLevel
-		logger.SetLevel(DefaultLevel)
+		logger.SetLevel(envLogLevel)
 	}
 }
 

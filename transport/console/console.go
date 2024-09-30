@@ -1,8 +1,9 @@
 package console
 
 import (
-	"fmt"
+	"io"
 	"log"
+	"os"
 
 	"github.com/go-zoox/logger/components/constants"
 	"github.com/go-zoox/logger/components/transport"
@@ -11,27 +12,35 @@ import (
 type Console struct {
 	level  string
 	logger *log.Logger
+	//
+	stdout io.Writer
 }
 
-type Config struct {
+type Option struct {
 	Level string
+	//
+	Stdout io.Writer
 }
 
-func New(config ...*Config) transport.Transport {
-	level := constants.LevelDebug
-	if len(config) > 0 {
-		if config[0].Level != "" {
-			level = config[0].Level
-		}
+func New(opts ...func(opt *Option)) transport.Transport {
+	opt := &Option{
+		Level:  constants.LevelDebug,
+		Stdout: os.Stdout,
+	}
+	for _, o := range opts {
+		o(opt)
 	}
 
 	return &Console{
-		level: level,
+		level:  opt.Level,
+		stdout: opt.Stdout,
 	}
 }
 
 func (c *Console) Write(p []byte) (n int, err error) {
-	fmt.Println(string(p))
+	line := append([]byte{}, p...)
+	line = append(line, '\n')
+	c.stdout.Write(line)
 	return len(p), nil
 }
 

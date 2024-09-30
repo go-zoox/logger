@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -21,38 +22,31 @@ type Logger struct {
 	transports map[string]cst.Transport
 }
 
-// Options is the options for the logger.
-type Options struct {
+// Option is the options for the logger.
+type Option struct {
 	Level      string
 	Transports map[string]cst.Transport
 	TimeFormat string
 }
 
 // New creates a new logger object.
-func New(options ...*Options) *Logger {
-	level := csc.LevelInfo
-	transports := map[string]cst.Transport{
-		"console": console.New(),
+func New(option ...func(opt *Option)) *Logger {
+	opt := &Option{
+		Level: csc.LevelInfo,
+		Transports: map[string]cst.Transport{
+			"console": console.New(),
+		},
+		TimeFormat: "YYYY/MM/DD HH:mm:ss",
 	}
-	timeFormat := "YYYY/MM/DD HH:mm:ss"
-
-	if len(options) > 0 {
-		if options[0].Level != "0" {
-			level = options[0].Level
-		}
-		if options[0].Transports != nil {
-			transports = options[0].Transports
-		}
-		if options[0].TimeFormat != "" {
-			timeFormat = options[0].TimeFormat
-		}
+	for _, o := range option {
+		o(opt)
 	}
 
 	return &Logger{
 		messageCh:  make(chan *csm.Message, csc.LogOutputBuffer),
-		level:      level,
-		timeFormat: timeFormat,
-		transports: transports,
+		level:      opt.Level,
+		timeFormat: opt.TimeFormat,
+		transports: opt.Transports,
 	}
 }
 
@@ -91,6 +85,15 @@ func (l *Logger) AppendTransports(transports map[string]cst.Transport) error {
 // SetTimeFormat sets the time format.
 func (l *Logger) SetTimeFormat(format string) {
 	l.timeFormat = format
+}
+
+// SetStdout sets the stdout of the logger.
+func (l *Logger) SetStdout(stdout io.Writer) {
+	l.transports = map[string]cst.Transport{
+		"console": console.New(func(opt *console.Option) {
+			opt.Stdout = stdout
+		}),
+	}
 }
 
 func (l *Logger) write(level string, format string, args ...interface{}) {

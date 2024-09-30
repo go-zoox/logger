@@ -22,16 +22,16 @@ type Logger struct {
 	transports map[string]cst.Transport
 }
 
-// Options is the options for the logger.
-type Options struct {
+// Option is the options for the logger.
+type Option struct {
 	Level      string
 	Transports map[string]cst.Transport
 	TimeFormat string
 }
 
 // New creates a new logger object.
-func New(option ...func(opt *Options)) *Logger {
-	opt := &Options{
+func New(option ...func(opt *Option)) *Logger {
+	opt := &Option{
 		Level: csc.LevelInfo,
 		Transports: map[string]cst.Transport{
 			"console": console.New(),

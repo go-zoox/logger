@@ -42,12 +42,15 @@ func New(option ...func(opt *Option)) *Logger {
 		o(opt)
 	}
 
-	return &Logger{
+	l := &Logger{
 		messageCh:  make(chan *csm.Message, csc.LogOutputBuffer),
-		level:      opt.Level,
 		timeFormat: opt.TimeFormat,
 		transports: opt.Transports,
 	}
+
+	l.SetLevel(opt.Level)
+
+	return l
 }
 
 // SetLevel sets the level of the logger.
@@ -97,7 +100,7 @@ func (l *Logger) SetStdout(stdout io.Writer) {
 }
 
 func (l *Logger) write(level string, format string, args ...interface{}) {
-	// fmt.Printf("[logger.write] 系统日志等级（%s），用户实际日志等级：%s => %v\n", l.level, level, csc.LevelMap[l.level] > csc.LevelMap[level])
+	// fmt.Printf("[logger.write] 系统日志等级（%s），用户调用日志方法：%s => %v\n", l.level, level, csc.LevelMap[l.level] > csc.LevelMap[level])
 	if level == LevelInfo {
 		// @TODO History for author, loves use Infof for user, so we need to keep it.
 	} else if csc.LevelMap[l.level] > csc.LevelMap[level] {

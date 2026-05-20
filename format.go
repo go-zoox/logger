@@ -10,12 +10,12 @@ func Infof(format string, args ...interface{}) {
 	logger.Info(format, args...)
 }
 
-// Warnf logs a warning message.
+// Warnf logs a warning message (routes by level to configured sinks).
 func Warnf(format string, args ...interface{}) {
 	logger.Warn(format, args...)
 }
 
-// Errorf logs an error message.
+// Errorf logs an error message (routes to sinks with levels: [error], etc.).
 func Errorf(format string, args ...interface{}) {
 	logger.Error(format, args...)
 }

@@ -2,34 +2,63 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/go-zoox/logger)](https://pkg.go.dev/github.com/go-zoox/logger)
 [![Build Status](https://github.com/go-zoox/logger/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/go-zoox/logger/actions/workflows/ci.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/go-zoox/logger)](https://goreportcard.com/report/github.com/go-zoox/logger)
-[![Coverage Status](https://coveralls.io/repos/github/go-zoox/logger/badge.svg?branch=master)](https://coveralls.io/github/go-zoox/logger?branch=master)
-[![GitHub issues](https://img.shields.io/github/issues/go-zoox/logger.svg)](https://github.com/go-zoox/logger/issues)
-[![Release](https://img.shields.io/github/tag/go-zoox/logger.svg?label=Release)](https://github.com/go-zoox/logger/tags)
 
 ## Installation
-To install the package, run:
+
 ```bash
 go get github.com/go-zoox/logger
 ```
 
-## Getting Started
+## Usage
 
 ```go
-logger.Debug("Hi, %s", "Goo Zoox")
-logger.Info("Hi, %s", "Goo Zoox")
-logger.Warn("Hi, %s", "Goo Zoox")
-logger.Error("Hi, %s", "Goo Zoox")
-logger.Fatal("Hi, %s", "Goo Zoox")
-
-// set level
-logger.SetLevel("error")
+logger.Info("hello")
+logger.Error("something failed")
 ```
 
-## Inspired by
-* [kenshinx/godns](https://github.com/kenshinx/godns/blob/master/log.go) - About
-A fast dns cache server written by go.
-* [winstonjs/winston](https://github.com/winstonjs/winston) - A logger for just about everything.
+## Transports
+
+A `Logger` holds named **transports**. Each log line is sent to **every** transport; each transport decides what to do (console, files, etc.).
+
+### Console (default)
+
+```go
+l := logger.New() // includes console transport
+```
+
+### File transport with per-level paths
+
+`file.Config.FilePath` is the **default** file. Optional `Levels` sends specific log levels to other files; all other levels still use `FilePath`.
+
+```go
+import (
+	"github.com/go-zoox/logger"
+	"github.com/go-zoox/logger/transport/console"
+	"github.com/go-zoox/logger/transport/file"
+)
+
+l := logger.New(func(opt *logger.Option) {
+	opt.Transports = map[string]transport.Transport{
+		"console": console.New(),
+		"file": file.New(&file.Config{
+			FilePath: "/var/log/app.log",
+			Levels: map[string]string{
+				"error": "/var/log/error.log",
+			},
+		}),
+	}
+})
+
+l.Info("→ console + app.log")
+l.Error("→ console + error.log")
+```
+
+Omit `Levels` (or leave it empty) to write every line to `FilePath` only. Level keys: `debug`, `info`, `warn`, `error`, `fatal`.
+
+### Multiple transports
+
+Use several entries in `opt.Transports` (e.g. `console` + `file` above). No extra sink/output layer.
 
 ## License
-GoZoox is released under the [MIT License](./LICENSE).
+
+[MIT](./LICENSE)

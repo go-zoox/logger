@@ -12,6 +12,18 @@ import (
 var LogLevelEnv = "LOG_LEVEL"
 
 var logger = New()
+
+// Default returns the package-level logger.
+func Default() *Logger {
+	return logger
+}
+
+// SetDefault replaces the package-level logger (e.g. after configuring outputs).
+func SetDefault(l *Logger) {
+	if l != nil {
+		logger = l
+	}
+}
 var (
 	// LevelDebug is Level Debug
 	LevelDebug = constants.LevelDebug
